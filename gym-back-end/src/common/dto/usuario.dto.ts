@@ -14,13 +14,13 @@ export class IUserDTO {
     @IsNotEmpty()
     lastName: string;
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    phoneNumber: number;
+    phoneNumber: string;
 
     @IsDate()
     @IsNotEmpty()
-    dateOfBirth: Date;
+    birthDate: Date;
 
     @IsInt()
     @IsNotEmpty()
@@ -33,6 +33,7 @@ export class IUserDTO {
     @IsString()
     @Min(5)
     @Max(15)
+    @IsNotEmpty()
     password: string;
 
     @IsString()
