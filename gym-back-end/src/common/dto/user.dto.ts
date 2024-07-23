@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsDate, IsDateString, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class IUserDTO {
 
@@ -18,7 +18,7 @@ export class IUserDTO {
     @IsNotEmpty()
     phoneNumber: string;
 
-    @IsDate()
+    @IsDateString()
     @IsNotEmpty()
     birthDate: Date;
 
@@ -31,8 +31,8 @@ export class IUserDTO {
     email: string;
 
     @IsString()
-    @Min(5)
-    @Max(15)
+    @MinLength(5)
+    @MaxLength(15)
     @IsNotEmpty()
     password: string;
 
