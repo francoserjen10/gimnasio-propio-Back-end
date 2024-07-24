@@ -2,7 +2,7 @@ import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestj
 import { DataBase } from './dataBase.service';
 import { IUserDTO } from '../dto/user.dto';
 import * as bcrypt from 'bcryptjs';
-import { ResultSetHeader } from 'mysql2';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import userQueries from '../queries/user.query';
 import { IUserResponseDTO } from '../dto/userResponse.dto';
 
@@ -28,6 +28,16 @@ export class RegisterService {
                 // throw new Error("Ocurrio un error al hashear la contrasenia");
                 throw new HttpException('Ocurrio un error al hashear la contraseña del usuario', HttpStatus.INTERNAL_SERVER_ERROR);
             }
+
+            const existingUser: RowDataPacket[] = await this.dbService.executeSelect(
+                userQueries.checkIfExist,
+                [user.name, user.lastName, user.phoneNumber, user.birthDate, user.dni, user.email]
+            );
+
+            if (existingUser) {
+                throw new HttpException('El usuario que se quiere registrar ya existe', 409)
+            }
+
             const resultQuery: ResultSetHeader = await this.dbService.executeQuery(
                 // Crear las queries de la tabla de usuarios de la base de datos
                 userQueries.insertUser,
@@ -46,10 +56,7 @@ export class RegisterService {
             }
         } catch (error) {
             console.error("Error al crear el usuario:", error);
-            if (error.code === 'ER_DUP_ENTRY') {
-                throw new ConflictException('El usuario con este correo electrónico ya existe');
-            }
+            throw new HttpException('Ocurrió un error al crear el usuario', HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 }
