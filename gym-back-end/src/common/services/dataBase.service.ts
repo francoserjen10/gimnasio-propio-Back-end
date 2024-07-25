@@ -7,13 +7,13 @@ export class DataBase {
     private pool: Pool;
     constructor() {
         this.pool = createPool({
-            port: 3306,
-            database: 'gimnasio',
-            password: 'baloo206',
-            host: 'localhost',
-            user: 'root',
+            port: Number(process.env.DB_PORT),
+            database: process.env.DB_DATABASE,
+            password: process.env.DB_PASSWORD,
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
             // cantidad maxima de conexiones en el pool
-            connectionLimit: 10,
+            connectionLimit: Number(process.env.DB_CONNECTIONLIMIT),
         });
     };
 
