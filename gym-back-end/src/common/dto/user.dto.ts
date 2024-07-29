@@ -38,9 +38,17 @@ export class IUserDTO {
 
     @IsString()
     @IsOptional()
-    urlImage: string;
+    urlImage?: string;
 
     @IsInt()
     @IsNotEmpty()
     rolId: number;
+
+    @IsString()
+    @IsNotEmpty()
+    emergencyContact:string;
+
+    @IsString()
+    @IsNotEmpty()
+    direction: string;
 }

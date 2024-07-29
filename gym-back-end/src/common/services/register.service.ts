@@ -32,14 +32,14 @@ export class RegisterService {
 
             const existingUser: RowDataPacket[] = await this.dbService.executeSelect(
                 userQueries.checkIfExist,
-                [user.name, user.lastName, user.phoneNumber, user.birthDate, user.dni, user.email]
+                [user.name, user.lastName, user.phoneNumber, user.birthDate, user.dni, user.email, user.emergencyContact, user.direction]
             );
 
             if (existingUser.length === 0) {
                 const resultQuery: ResultSetHeader = await this.dbService.executeQuery(
                     // Crear las queries de la tabla de usuarios de la base de datos
                     userQueries.insertUser,
-                    [user.name, user.lastName, user.phoneNumber, user.birthDate, user.dni, user.email, hashedPassword, user.rolId ?? 2]
+                    [user.name, user.lastName, user.phoneNumber, user.birthDate, user.dni, user.email, hashedPassword, user.rolId ?? 2, user.emergencyContact, user.direction]
                 );
 
                 return {
@@ -51,6 +51,8 @@ export class RegisterService {
                     dni: user.dni,
                     email: user.email,
                     rolId: user.rolId,
+                    emergencyContact: user.emergencyContact, 
+                    direction: user.direction
                 }
             } else {
                 throw new HttpException('El usuario que se quiere registrar ya existe', HttpStatus.CONFLICT)
@@ -64,7 +66,7 @@ export class RegisterService {
 
     login(user: IUserResponseDTO) {
         try {
-            const payload = { id: user.id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId };
+            const payload = { id: user.id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId, emergencyContact: user.emergencyContact, direction: user.direction };
             return {
                 accessToken: this.jwtService.sign(payload)
             }
