@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsDateString, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class IUserDTO {
 
@@ -42,11 +42,12 @@ export class IUserDTO {
 
     @IsInt()
     @IsNotEmpty()
+    @IsOptional()
     rolId: number;
 
     @IsString()
     @IsNotEmpty()
-    emergencyContact:string;
+    emergencyContact: string;
 
     @IsString()
     @IsNotEmpty()
