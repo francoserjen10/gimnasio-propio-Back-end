@@ -51,7 +51,7 @@ export class RegisterService {
                     dni: user.dni,
                     email: user.email,
                     rolId: user.rolId,
-                    emergencyContact: user.emergencyContact, 
+                    emergencyContact: user.emergencyContact,
                     direction: user.direction
                 }
             } else {
