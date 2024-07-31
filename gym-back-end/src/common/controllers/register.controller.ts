@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { RegisterService } from '../services/register.service';
 import { IUserDTO } from '../dto/user.dto';
 
@@ -17,6 +17,16 @@ export class RegisterController {
             return this.registerService.login(user);
         } catch (error) {
             throw new HttpException("Error al crear el usuario", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get()
+    async allUser() {
+        try {
+            const user = await this.registerService.getAllUsers();
+            return user;
+        } catch {
+            throw new HttpException("Error al obtener los usuarios", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
