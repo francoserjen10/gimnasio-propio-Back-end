@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
+import { IsDateString, IsEmail, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min, MinLength } from "class-validator";
 
 export class IUserDTO {
 
@@ -38,9 +38,18 @@ export class IUserDTO {
 
     @IsString()
     @IsOptional()
-    urlImage: string;
+    urlImage?: string;
 
     @IsInt()
     @IsNotEmpty()
+    @IsOptional()
     rolId: number;
+
+    @IsString()
+    @IsNotEmpty()
+    emergencyContact: string;
+
+    @IsString()
+    @IsNotEmpty()
+    direction: string;
 }
