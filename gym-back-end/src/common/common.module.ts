@@ -3,6 +3,8 @@ import { RegisterService } from 'src/common/services/register.service';
 import { DataBase } from './services/dataBase.service';
 import { RegisterController } from './controllers/register.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { LoginService } from './services/login.service';
+import { LoginController } from './controllers/login.controller';
 import * as dotenv from 'dotenv';
 
 const result = dotenv.config();
@@ -18,8 +20,8 @@ if (result.error) {
             signOptions: { expiresIn: '60s' },
         })
     ],
-    controllers: [RegisterController],
-    providers: [DataBase, RegisterService],
+    controllers: [RegisterController, LoginController],
+    providers: [DataBase, RegisterService, LoginService],
     exports: [],
 })
 export class CommonModule { }
