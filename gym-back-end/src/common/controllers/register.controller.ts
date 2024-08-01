@@ -14,7 +14,7 @@ export class RegisterController {
             if (!user) {
                 throw new HttpException('No se reconoce el usuario', HttpStatus.BAD_REQUEST);
             }
-            return this.registerService.login(user);
+            return this.registerService.createToken(user);
         } catch (error) {
             throw new HttpException("Error al crear el usuario", HttpStatus.INTERNAL_SERVER_ERROR);
         }
