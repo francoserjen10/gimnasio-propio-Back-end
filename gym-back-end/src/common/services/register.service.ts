@@ -89,7 +89,7 @@ export class RegisterService {
         }
     }
 
-    login(user: IUserResponseDTO) {
+    createToken(user: IUserResponseDTO) {
         try {
             const payload = { id: user.id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId, emergencyContact: user.emergencyContact, direction: user.direction };
             return {
