@@ -11,7 +11,6 @@ export class LoginController {
     async login(@Body() body: { email: string, password: string }) {
         try {
             const user = await this.loginService.validateUser(body.email, body.password);
-            console.log("response", user);
             return this.registerService.createToken(user);
         } catch (error) {
             console.error("Controllador de login error", error)
