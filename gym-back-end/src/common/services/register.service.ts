@@ -1,4 +1,4 @@
-import { ConflictException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { IUserDTO } from '../dto/user.dto';
 import * as bcrypt from 'bcryptjs';
 import { IUserResponseDTO } from '../dto/userResponse.dto';
@@ -80,7 +80,6 @@ export class RegisterService {
                 direction: user.direction
             }
         });
-        console.log("response", response);
         return response
     }
 

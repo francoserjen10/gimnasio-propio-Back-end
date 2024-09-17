@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { RegisterService } from 'src/common/services/register.service';
-import { DataBase } from './services/dataBase.service';
 import { RegisterController } from './controllers/register.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { LoginService } from './services/login.service';
@@ -35,7 +34,7 @@ if (result.error) {
         })
     ],
     controllers: [RegisterController, LoginController],
-    providers: [DataBase, RegisterService, LoginService],
+    providers: [RegisterService, LoginService],
     exports: [],
 })
 export class CommonModule { }
