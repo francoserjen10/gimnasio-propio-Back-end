@@ -4,7 +4,7 @@ export class IUserDTO {
 
     @IsInt()
     @IsOptional()
-    id: number;
+    id?: number;
 
     @IsString()
     @IsNotEmpty()
