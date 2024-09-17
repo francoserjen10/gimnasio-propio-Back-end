@@ -15,24 +15,8 @@ export class RegisterService {
 
     async getAllUsers(): Promise<IUserDTO[]> {
         try {
-            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(userQueries.selectAll, []);
-            const resultUsers = resultQuery.map((rs: RowDataPacket) => {
-                return {
-                    id: rs['usuario_id'],
-                    name: rs['nombre'],
-                    lastName: rs['apellido'],
-                    phoneNumber: rs['numero_telefono'],
-                    birthDate: rs['fecha_nacimiento'],
-                    dni: rs['dni'],
-                    email: rs['email'],
-                    password: rs['contraseña'],
-                    rolId: rs['rol_id'],
-                    emergencyContact: rs['contacto_de_emergencia'],
-                    direction: rs['contacto_de_emergencia']
-                }
-            }
-            );
-            return resultUsers;
+            const users: User[] = await this.userRepository.find();
+            return users;
         } catch {
             throw new HttpException("Error en la peticion a la base de datos", HttpStatus.BAD_REQUEST);
         }

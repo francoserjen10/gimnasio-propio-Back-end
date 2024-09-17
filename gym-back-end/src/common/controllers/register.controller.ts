@@ -20,16 +20,16 @@ export class RegisterController {
         }
     }
 
-    // @Get()
-    // async allUser() {
-    //     try {
-    //         const user = await this.registerService.getAllUsers();
-    //         if (!user || user.length === 0) {
-    //             throw new HttpException("No hay usuarios registrados", HttpStatus.NO_CONTENT);
-    //         }
-    //         return user;
-    //     } catch {
-    //         throw new HttpException("Error al obtener los usuarios", HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+    @Get()
+    async allUser() {
+        try {
+            const user = await this.registerService.getAllUsers();
+            if (!user || user.length === 0) {
+                throw new HttpException("No hay usuarios registrados", HttpStatus.NO_CONTENT);
+            }
+            return user;
+        } catch {
+            throw new HttpException("Error al obtener los usuarios", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
