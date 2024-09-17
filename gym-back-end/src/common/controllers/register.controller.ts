@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { RegisterService } from '../services/register.service';
 import { IUserDTO } from '../dto/user.dto';
 
@@ -7,7 +7,7 @@ export class RegisterController {
 
     constructor(private registerService: RegisterService) { }
 
-    @Post('/create-user')
+    @Post('/')
     async createUser(@Body() body: IUserDTO) {
         try {
             const user = await this.registerService.createUser(body);
