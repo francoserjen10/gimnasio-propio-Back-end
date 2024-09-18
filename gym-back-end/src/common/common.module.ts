@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Appointment } from './entities/appointment.entity';
+import { Booking } from './entities/booking.entity';
 
 const result = dotenv.config();
 
@@ -28,7 +29,7 @@ if (result.error) {
             entities: ['dist/**/*.entity.js'],
             // logging: 'all',
         }),
-        TypeOrmModule.forFeature([User, Appointment]),
+        TypeOrmModule.forFeature([User, Appointment, Booking]),
         JwtModule.register({
             secret: process.env.JWT_SECRET_KEY,
             signOptions: { expiresIn: '60s' },

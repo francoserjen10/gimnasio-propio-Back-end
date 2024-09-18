@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Appointment } from "./appointment.entity";
 
 @Entity('reserva')
-export class User {
+export class Booking {
 
     @PrimaryGeneratedColumn({
         name: 'reserva_id',
@@ -26,4 +27,8 @@ export class User {
         type: 'date'
     })
     public bookingDate: Date;
+
+    // Un turno puede tener muchas reservas, pero cada reserva corresponde a un solo turno
+    @ManyToOne(() => Appointment, (apt) => apt.booking)
+    public appointment: Appointment;
 }
