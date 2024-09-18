@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Booking } from "./booking.entity";
 
 @Entity('turno')
 export class Appointment {
@@ -21,8 +22,8 @@ export class Appointment {
     })
     public capacity: number;
 
-    @ManyToOne(() => Booking, (bk) => bk.reservas)
-    public turno: Booking
+    @OneToMany(() => Booking, (bk) => bk.appointment)
+    public booking: Booking[];
 
     // Un usuario puede tener muchas reservas, pero cada reserva pertenece a un solo usuario
     

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Booking } from "./booking.entity";
 
 @Entity('usuario')
 export class User {
@@ -95,4 +96,7 @@ export class User {
         length: 50
     })
     public direction: string;
+    // Un usuario puede tener muchas reservas, pero cada reserva pertenece a un solo usuario
+    @OneToMany(() => Booking, (bk) => bk.userId)
+    public reservas: Booking[];
 }
