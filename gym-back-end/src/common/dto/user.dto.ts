@@ -1,6 +1,6 @@
 import { IsDateString, IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 
-export class IUserDTO {
+export class UserDTO {
 
     @IsInt()
     @IsOptional()
