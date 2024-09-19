@@ -14,7 +14,13 @@ export class Appointment {
         name: 'horario',
         type: 'time'
     })
-    public time: Date;
+    public time: string;
+
+    @Column({
+        name: 'fecha',
+        type: 'date',  // Fecha específica del turno
+      })
+      public date: string;
 
     @Column({
         name: 'capacidad',
