@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RegisterService } from 'src/common/services/register.service';
-import { RegisterController } from './controllers/register.controller';
+import { RegisterService } from 'src/common/services/auth/register.service';
+import { RegisterController } from './controllers/auth/register.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { LoginService } from './services/login.service';
-import { LoginController } from './controllers/login.controller';
+import { LoginService } from './services/auth/login.service';
+import { LoginController } from './controllers/auth/login.controller';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';

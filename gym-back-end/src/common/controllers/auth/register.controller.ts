@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { RegisterService } from '../services/register.service';
-import { IUserDTO } from '../dto/user.dto';
+import { RegisterService } from '../../services/auth/register.service';
+import { IUserDTO } from '../../dto/user.dto';
 
 @Controller('/register')
 export class RegisterController {
