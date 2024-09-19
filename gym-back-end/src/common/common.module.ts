@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { RegisterService } from 'src/common/services/register.service';
-import { RegisterController } from './controllers/register.controller';
+import { RegisterService } from 'src/common/services/auth/register.service';
+import { RegisterController } from './controllers/auth/register.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { LoginService } from './services/login.service';
-import { LoginController } from './controllers/login.controller';
+import { LoginService } from './services/auth/login.service';
+import { LoginController } from './controllers/auth/login.controller';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Appointment } from './entities/appointment.entity';
 import { Booking } from './entities/booking.entity';
+import { AppointmentService } from './services/appointments/appointment.service';
+import { AppointmentController } from './controllers/appointments/appointment.controller';
 
 const result = dotenv.config();
 
@@ -35,8 +37,8 @@ if (result.error) {
             signOptions: { expiresIn: '60s' },
         })
     ],
-    controllers: [RegisterController, LoginController],
-    providers: [RegisterService, LoginService],
+    controllers: [RegisterController, LoginController, AppointmentController],
+    providers: [RegisterService, LoginService, AppointmentService],
     exports: [],
 })
 export class CommonModule { }

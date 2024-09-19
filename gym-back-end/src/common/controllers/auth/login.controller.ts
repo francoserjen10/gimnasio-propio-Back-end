@@ -1,6 +1,6 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
-import { LoginService } from '../services/login.service';
-import { RegisterService } from '../services/register.service';
+import { LoginService } from '../../services/auth/login.service';
+import { RegisterService } from '../../services/auth/register.service';
 
 @Controller('/login')
 export class LoginController {
