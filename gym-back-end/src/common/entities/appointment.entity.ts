@@ -17,16 +17,16 @@ export class Appointment {
     public time: string;
 
     @Column({
-        name: 'fecha',
-        type: 'date',  // Fecha específica del turno
-      })
-      public date: string;
-
-    @Column({
         name: 'capacidad',
         type: 'int'
     })
     public capacity: number;
+
+    @Column({
+        name: 'fecha',
+        type: 'date',  // Fecha específica del turno
+      })
+      public date: string;
 
     @OneToMany(() => Booking, (bk) => bk.appointment)
     public booking: Booking[];
