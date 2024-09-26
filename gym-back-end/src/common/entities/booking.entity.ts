@@ -26,7 +26,7 @@ export class Booking {
         name: 'fecha_reserva',
         type: 'date'
     })
-    public bookingDate: Date;
+    public bookingDate: string;
 
     // Un turno puede tener muchas reservas, pero cada reserva corresponde a un solo turno
     @ManyToOne(() => Appointment, (apt) => apt.booking)
