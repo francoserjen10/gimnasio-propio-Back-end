@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserDTO } from '../../dto/user.dto';
 import * as bcrypt from 'bcryptjs';
-import { UserResponseDTO } from '../../dto/userResponse.dto';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
+import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
 @Injectable()
 export class RegisterService {
@@ -13,7 +12,7 @@ export class RegisterService {
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private jwtService: JwtService) { }
 
-    async getAllUsers(): Promise<UserDTO[]> {
+    async getAllUsers(): Promise<IUser[]> {
         try {
             const users: User[] = await this.userRepository.find();
             return users;
@@ -31,7 +30,7 @@ export class RegisterService {
         }
     }
 
-    async createUser(user: UserDTO): Promise<UserResponseDTO> {
+    async createUser(user: IUser): Promise<IUserResponse> {
         try {
             const hashedPassword = await this.hashPassword(user.password);
             if (!hashedPassword) {
@@ -83,7 +82,7 @@ export class RegisterService {
         return response
     }
 
-    createToken(user: UserResponseDTO) {
+    createToken(user: IUserResponse) {
         try {
             const payload = { id: user.id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId, emergencyContact: user.emergencyContact, direction: user.direction };
             return {

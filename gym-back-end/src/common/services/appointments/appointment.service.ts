@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AppointmentDto } from 'src/common/dto/appointment.dto';
 import { Appointment } from 'src/common/entities/appointment.entity';
+import { IAppointment } from 'src/common/models/interfaces/appointment.interface';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class AppointmentService {
 
     constructor(@InjectRepository(Appointment) private readonly appointmentRepository: Repository<Appointment>) { }
 
-    async createDailyAppointment(date: string): Promise<AppointmentDto[]> {
+    async createDailyAppointment(date: string): Promise<IAppointment[]> {
 
         const startDate = new Date(date);
         console.log("startDate", startDate)

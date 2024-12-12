@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcryptjs'
-import { UserResponseDTO } from '../../dto/userResponse.dto';
+import * as bcrypt from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
+import { IUserResponse } from 'src/common/models/interfaces/user.interface';
 
 @Injectable()
 export class LoginService {
@@ -11,7 +11,7 @@ export class LoginService {
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
     // Le llegan los datos (mail - password)
-    async validateUser(email: string, password: string): Promise<UserResponseDTO | null> {
+    async validateUser(email: string, password: string): Promise<IUserResponse | null> {
         try {
             //    1- comparar el mail entrante con los de la base de datos
             const user = await this.userRepository.findOneBy({ email })
