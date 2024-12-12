@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { RegisterService } from '../../services/auth/register.service';
-import { UserDTO } from '../../dto/user.dto';
+import { IUser } from 'src/common/models/interfaces/user.interface';
 
 @Controller('/register')
 export class RegisterController {
@@ -8,7 +8,7 @@ export class RegisterController {
     constructor(private registerService: RegisterService) { }
 
     @Post('/')
-    async createUser(@Body() body: UserDTO) {
+    async createUser(@Body() body: IUser) {
         try {
             const user = await this.registerService.createUser(body);
             if (!user) {
