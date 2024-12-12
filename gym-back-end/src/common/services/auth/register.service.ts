@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../entities/user.entity';
+import { User } from '../../models/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 

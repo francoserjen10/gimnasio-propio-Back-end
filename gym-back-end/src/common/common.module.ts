@@ -6,9 +6,9 @@ import { LoginService } from './services/auth/login.service';
 import { LoginController } from './controllers/auth/login.controller';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Appointment } from './entities/appointment.entity';
-import { Booking } from './entities/booking.entity';
+import { User } from './models/entities/user.entity';
+import { Appointment } from './models/entities/appointment.entity';
+import { Booking } from './models/entities/booking.entity';
 import { AppointmentService } from './services/appointments/appointment.service';
 import { AppointmentController } from './controllers/appointments/appointment.controller';
 

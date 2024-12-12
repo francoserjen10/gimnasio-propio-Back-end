@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Appointment } from 'src/common/entities/appointment.entity';
+import { Appointment } from 'src/common/models/entities/appointment.entity';
 import { IAppointment } from 'src/common/models/interfaces/appointment.interface';
 import { Repository } from 'typeorm';
 
