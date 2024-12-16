@@ -17,11 +17,17 @@ export class RegisterService {
         try {
             const user: IUserResponse = await this.userRepository.findOneBy({ usuario_id: id });
             if (!user) {
-                throw new error;
+                throw new HttpException(`No se encontró el usuario con el ID ${id}`, HttpStatus.NOT_FOUND);
             }
             return user;
         } catch (error) {
-            throw new HttpException(`Ocurrió un error al ubicar el usuario con id ${id}`, HttpStatus.NOT_FOUND);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new HttpException(
+                `Error inesperado al obtener el usuario con el ID ${id}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 

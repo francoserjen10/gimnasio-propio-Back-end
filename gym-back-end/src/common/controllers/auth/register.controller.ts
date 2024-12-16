@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { RegisterService } from '../../services/auth/register.service';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
@@ -39,7 +39,13 @@ export class RegisterController {
             const response: IUserResponse = await this.registerService.getUserById(id);
             return response;
         } catch (error) {
-            throw new HttpException('Error al buscar usuario', HttpStatus.INTERNAL_SERVER_ERROR);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new HttpException(
+                `Error inesperado al obtener el usuario con el ID ${id}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
         }
     }
 }
