@@ -13,6 +13,26 @@ export class RegisterService {
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private jwtService: JwtService) { }
 
+    async updateUserById(id: number, user: IUserResponse): Promise<IUserResponse> {
+        try {
+            const existingUser = await this.userRepository.findOneBy({ usuario_id: id });
+            if (existingUser === null) {
+                throw new HttpException(`Usuario con id ${id} no encontrado`, HttpStatus.NOT_FOUND);
+            }
+            const userToUpdate = {
+                ...existingUser,
+                ...user
+            }
+            const userUpdated = await this.userRepository.save(userToUpdate);
+            return userUpdated;
+        } catch (error) {
+            throw new HttpException(
+                `Error inesperado al actualizar el usuario con el id ${id}: ${error.message}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
     async deleteUserById(id: number): Promise<{ message: string; affected: number }> {
         try {
             const userDeleted = await this.userRepository.delete({ usuario_id: id });
