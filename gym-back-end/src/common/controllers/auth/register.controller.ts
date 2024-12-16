@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { RegisterService } from '../../services/auth/register.service';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
@@ -61,6 +61,22 @@ export class RegisterController {
             }
             throw new HttpException(
                 `Error inesperado al eliminar el usuario con el ID ${id}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+    @Put(':id')
+    async updateUserById(@Param('id') id: number, @Body() user: IUserResponse): Promise<IUserResponse> {
+        try {
+            const response = this.registerService.updateUserById(id, user);
+            return response
+        } catch (error) {
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new HttpException(
+                `Error inesperado al actualizar el usuario con el ID ${id}`,
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
         }
