@@ -1,6 +1,6 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { RegisterService } from '../../services/auth/register.service';
-import { IUser } from 'src/common/models/interfaces/user.interface';
+import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
 @Controller('/register')
 export class RegisterController {
@@ -30,6 +30,16 @@ export class RegisterController {
             return user;
         } catch {
             throw new HttpException("Error al obtener los usuarios", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Get(':id')
+    async getUserById(@Param('id') id: number): Promise<IUserResponse> {
+        try {
+            const response: IUserResponse = await this.registerService.getUserById(id);
+            return response;
+        } catch (error) {
+            throw new HttpException('Error al buscar usuario', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

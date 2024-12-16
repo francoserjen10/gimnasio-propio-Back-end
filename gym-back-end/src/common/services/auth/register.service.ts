@@ -5,12 +5,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../models/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
+import { error } from 'console';
 
 @Injectable()
 export class RegisterService {
     saltRounds: number = 10;
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private jwtService: JwtService) { }
+
+    async getUserById(id: number): Promise<IUserResponse | null> {
+        try {
+            const user: IUserResponse = await this.userRepository.findOneBy({ usuario_id: id });
+            if (!user) {
+                throw new error;
+            }
+            return user;
+        } catch (error) {
+            throw new HttpException(`Ocurrió un error al ubicar el usuario con id ${id}`, HttpStatus.NOT_FOUND);
+        }
+    }
 
     async getAllUsers(): Promise<IUser[]> {
         try {
@@ -84,7 +97,7 @@ export class RegisterService {
 
     createToken(user: IUserResponse) {
         try {
-            const payload = { id: user.id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId, emergencyContact: user.emergencyContact, direction: user.direction };
+            const payload = { id: user.usuario_id, name: user.name, lastName: user.lastName, phoneNumber: user.phoneNumber, birthDate: user.birthDate, dni: user.dni, email: user.email, rolId: user.rolId, emergencyContact: user.emergencyContact, direction: user.direction };
             return {
                 accessToken: this.jwtService.sign(payload)
             }
