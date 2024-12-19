@@ -49,7 +49,7 @@ export class AppointmentService {
             }
             return appointments;
         } catch (error) {
-            this.logger.error('Falló la creación diaria de los appointments', error.stack,);
+            this.logger.error('Falló la creación de los appointments', error.stack,);
             if (error instanceof HttpException) { throw error; }
             throw new HttpException('Error al crear los appointments diarios', HttpStatus.INTERNAL_SERVER_ERROR);
         }
