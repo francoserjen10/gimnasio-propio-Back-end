@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from 'src/common/models/entities/appointment.entity';
 import { Booking } from 'src/common/models/entities/booking.entity';
@@ -16,6 +16,28 @@ export class BookingService {
             @InjectRepository(Appointment) private readonly appointmentRepository: Repository<Appointment>
         ) { }
 
+    async updateBooking(bookingId: number, newBooking: IBooking): Promise<IBooking> {
+        try {
+            const existingBooking: Booking = await this.bookingRepository.findOneBy({ bookingId: bookingId });
+            if (!existingBooking || existingBooking === null) {
+                this.logger.warn(`Reserva con id ${bookingId} no encontrada`);
+                throw new NotFoundException(`La reserva con id ${bookingId} no se encontro`);
+            }
+            const bookingToUpdate = {
+                ...existingBooking,
+                ...newBooking
+            }
+            const bookingUpdated: IBooking = await this.bookingRepository.save(bookingToUpdate);
+            this.logger.log(`Reserva con id ${bookingId} fue actualizada con exito!`);
+            return bookingUpdated;
+        } catch (error) {
+            this.logger.error('Falló la actualizacion de la reserva', error.stack,);
+            if (error instanceof HttpException) { throw error; }
+            throw new InternalServerErrorException('Error al actualizar la reserva');
+        }
+    }
+
+    //Agregarle que si se elimina una reserva, que se agregue nuevamente una capacidad
     async deleteBooking(bookingId: number): Promise<{ message: string; affected: number }> {
         try {
             const bookingDeleted = await this.bookingRepository.delete({ bookingId: bookingId });
