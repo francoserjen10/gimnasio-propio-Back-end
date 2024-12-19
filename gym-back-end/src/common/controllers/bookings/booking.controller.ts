@@ -16,8 +16,8 @@ export class BookingController {
         }
     }
 
-    @Delete()
-    async deleteBooking(@Body('bookingId') bookingId: number) {
+    @Delete(':bookingId')
+    async deleteBooking(@Param('bookingId') bookingId: number) {
         try {
             return await this.bookingServices.deleteBooking(bookingId);
         } catch (error) {

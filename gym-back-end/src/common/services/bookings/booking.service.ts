@@ -37,9 +37,13 @@ export class BookingService {
         }
     }
 
-    //Agregarle que si se elimina una reserva, que se agregue nuevamente una capacidad
     async deleteBooking(bookingId: number): Promise<{ message: string; affected: number }> {
         try {
+            const booking: Booking = await this.bookingRepository.findOne({ where: { bookingId: bookingId } });
+            const appointment: IAppointment = await this.verifyIfExistAppointment(booking.appointmentId);
+            appointment.capacity += 1;
+            await this.appointmentRepository.save(appointment);
+            this.logger.log(`Capacidad agregada para el turno con id ${appointment.appointmentId}, nueva capacidad: ${appointment.capacity}`);
             const bookingDeleted = await this.bookingRepository.delete({ bookingId: bookingId });
             if (bookingDeleted.affected === 0) {
                 this.logger.warn(`Reserva con id ${bookingId} no encontrada`);
@@ -56,7 +60,6 @@ export class BookingService {
         }
     }
 
-    // crear una reserva de un turno (appointments)
     async createBooking(appointmentId: number, userId: number): Promise<IBooking> {
         try {
             const appointment: IAppointment = await this.verifyIfExistAppointment(appointmentId);
@@ -101,9 +104,9 @@ export class BookingService {
         }
     }
 
-    async verifyIfExistUserInBooking(appointmentId: number, userId: number): Promise<IBooking> {
+    async verifyIfExistUserInBooking(appointmentId: number, userId: number): Promise<Booking> {
         try {
-            const existUserInBooking: IBooking = await this.bookingRepository.findOne({ where: { appointmentId: appointmentId, userId: userId } });
+            const existUserInBooking: Booking = await this.bookingRepository.findOne({ where: { appointmentId: appointmentId, userId: userId } });
             if (existUserInBooking) {
                 this.logger.warn(`Usuario con id ${userId} ya tiene reserva en el turno ${appointmentId}`);
                 throw new ConflictException(`Usuario con id ${userId} ya existe`);
