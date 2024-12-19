@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,8 @@ import { error } from 'console';
 
 @Injectable()
 export class RegisterService {
+    private readonly logger = new Logger(RegisterService.name);
+
     saltRounds: number = 10;
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private jwtService: JwtService) { }
@@ -37,10 +39,13 @@ export class RegisterService {
         try {
             const userDeleted = await this.userRepository.delete({ usuario_id: id });
             if (userDeleted.affected === 0) {
-                throw new HttpException(`Usuario con id ${id} no encontrado`, HttpStatus.NOT_FOUND);
+                this.logger.warn(`Usuario con id ${id} no encontrado`);
+                throw new NotFoundException(`Usuario con id ${id} no encontrado`);
             }
+            this.logger.log(`Usuario con id ${id} eliminado correctamente!`);
             return { message: `Usuario con id ${id} eliminado correctamente`, affected: userDeleted.affected };
         } catch (error) {
+            this.logger.error(`Error al eliminar el usuario con id ${id}`, error.stack);
             if (error instanceof HttpException) {
                 throw error;
             }
