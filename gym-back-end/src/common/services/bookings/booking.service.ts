@@ -16,6 +16,24 @@ export class BookingService {
             @InjectRepository(Appointment) private readonly appointmentRepository: Repository<Appointment>
         ) { }
 
+    async deleteBooking(bookingId: number): Promise<{ message: string; affected: number }> {
+        try {
+            const bookingDeleted = await this.bookingRepository.delete({ bookingId: bookingId });
+            if (bookingDeleted.affected === 0) {
+                this.logger.warn(`Reserva con id ${bookingId} no encontrada`);
+                throw new NotFoundException(`Reserva con id ${bookingId} no encontrada`);
+            }
+            this.logger.log(`Reserva con id ${bookingId} eliminada correctamente!`);
+            return { message: `Reserva con id ${bookingId} eliminada correctamente`, affected: bookingDeleted.affected };
+        } catch (error) {
+            this.logger.error(`Error al eliminar la reserva con id ${bookingId}`, error.stack);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new HttpException('Error al eliminar la reserva', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // crear una reserva de un turno (appointments)
     async createBooking(appointmentId: number, userId: number): Promise<IBooking> {
         try {
