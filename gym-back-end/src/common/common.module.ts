@@ -11,6 +11,8 @@ import { Appointment } from './models/entities/appointment.entity';
 import { Booking } from './models/entities/booking.entity';
 import { AppointmentService } from './services/appointments/appointment.service';
 import { AppointmentController } from './controllers/appointments/appointment.controller';
+import { BookingController } from './controllers/bookings/booking.controller';
+import { BookingService } from './services/bookings/booking.service';
 
 const result = dotenv.config();
 
@@ -37,8 +39,8 @@ if (result.error) {
             signOptions: { expiresIn: '60s' },
         })
     ],
-    controllers: [RegisterController, LoginController, AppointmentController],
-    providers: [RegisterService, LoginService, AppointmentService],
+    controllers: [RegisterController, LoginController, AppointmentController, BookingController],
+    providers: [RegisterService, LoginService, AppointmentService, BookingService],
     exports: [],
 })
 export class CommonModule { }

@@ -1,5 +1,5 @@
 export interface IBooking {
-    id?: number;
+    bookingId?: number;
     appointmentId?: number;
     userId?: number;
 }
