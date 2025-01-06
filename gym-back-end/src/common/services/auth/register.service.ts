@@ -15,19 +15,24 @@ export class RegisterService {
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, private jwtService: JwtService) { }
 
-    async updateUserById(id: number, user: IUserResponse): Promise<IUserResponse> {
+    async updateUserById(id: number, user: IUser): Promise<IUser> {
         try {
+            this.logger.log(`Iniciando actualización del usuario con id: ${id}`);
             const existingUser = await this.userRepository.findOneBy({ usuario_id: id });
             if (existingUser === null) {
+                this.logger.warn(`Usuario con id ${id} no encontrado`);
                 throw new HttpException(`Usuario con id ${id} no encontrado`, HttpStatus.NOT_FOUND);
             }
+            const hashedPassword: string = await this.hashPassword(user.password);
             const userToUpdate = {
                 ...existingUser,
-                ...user
-            }
+                ...user,
+                password: hashedPassword
+            };
             const userUpdated = await this.userRepository.save(userToUpdate);
             return userUpdated;
         } catch (error) {
+            this.logger.error(`Error al actualizar el usuario con id ${id}: ${error.message}`, error.stack);
             throw new HttpException(
                 `Error inesperado al actualizar el usuario con el id ${id}: ${error.message}`,
                 HttpStatus.INTERNAL_SERVER_ERROR,
@@ -85,16 +90,17 @@ export class RegisterService {
 
     async hashPassword(password: string): Promise<string> {
         try {
+            this.logger.log('Iniciando hash de la contraseña');
             return bcrypt.hash(password, this.saltRounds);
         } catch (error) {
-            console.error("Error al hashear la contrsenia:", error);
+            this.logger.error('Error al hashear la contraseña:', error.stack);
             throw new HttpException('Ocurrio un error al hashear la contraseña del usuario', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     async createUser(user: IUser): Promise<IUserResponse> {
         try {
-            const hashedPassword = await this.hashPassword(user.password);
+            const hashedPassword: string = await this.hashPassword(user.password);
             if (!hashedPassword) {
                 // throw new Error("Ocurrio un error al hashear la contrasenia");
                 throw new HttpException('Ocurrio un error al hashear la contraseña del usuario', HttpStatus.INTERNAL_SERVER_ERROR);
