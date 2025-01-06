@@ -67,10 +67,9 @@ export class RegisterController {
     }
 
     @Put(':id')
-    async updateUserById(@Param('id') id: number, @Body() user: IUserResponse): Promise<IUserResponse> {
+    async updateUserById(@Param('id') id: number, @Body() user: IUser): Promise<IUser> {
         try {
-            const response = this.registerService.updateUserById(id, user);
-            return response
+            return this.registerService.updateUserById(id, user);
         } catch (error) {
             if (error instanceof HttpException) {
                 throw error;
