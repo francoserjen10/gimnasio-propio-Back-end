@@ -1,12 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../models/entities/user.entity';
 import { Repository } from 'typeorm';
-import { IUserResponse } from 'src/common/models/interfaces/user.interface';
+import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable()
 export class LoginService {
+    private readonly logger = new Logger(LoginService.name);
 
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
@@ -32,6 +34,20 @@ export class LoginService {
         } catch (error) {
             console.error("Error al loggerse:", error);
             throw new HttpException('Ocurrió un error al intentar acceder sesion', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    getUserRole(token: string): { rolId: number } | null {
+        try {
+            if (!token) {
+                this.logger.warn('Token no encontrado');
+                throw new UnauthorizedException('Token no encontrado');
+            }
+            const decodedToken: IUser = jwtDecode<User>(token);
+            return { rolId: decodedToken.rolId };
+        } catch (error) {
+            this.logger.error(`Error al decodificar el token: ${error.message}`, error.stack);
+            throw new InternalServerErrorException('Error al procesar el token');
         }
     }
 }
