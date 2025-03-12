@@ -9,10 +9,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   //Politicas de CORS
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: ['http://localhost:4200', 'http://localhost:3000'],
     credentials: true,
   });
   app.use(cookieParser());
-  await app.listen(8000);
+  await app.listen(8001);
 }
 bootstrap();

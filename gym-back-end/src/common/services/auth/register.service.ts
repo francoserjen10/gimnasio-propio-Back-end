@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../models/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
-import { error } from 'console';
 
 @Injectable()
 export class RegisterService {
@@ -105,15 +104,16 @@ export class RegisterService {
                 // throw new Error("Ocurrio un error al hashear la contrasenia");
                 throw new HttpException('Ocurrio un error al hashear la contraseña del usuario', HttpStatus.INTERNAL_SERVER_ERROR);
             }
-
+            const formattedDate: string | null = user.birthDate
+                ? new Date(user.birthDate).toISOString().split('T')[0]
+                : null;
             const existingUser = await this.checkIfUserExists(user);
-
             if (existingUser === null) {
                 const newUser: User = await this.userRepository.create({
                     name: user.name,
                     lastName: user.lastName,
                     phoneNumber: user.phoneNumber,
-                    birthDate: user.birthDate,
+                    birthDate: formattedDate,
                     dni: user.dni,
                     email: user.email,
                     rolId: user.rolId,
