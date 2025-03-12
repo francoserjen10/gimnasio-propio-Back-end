@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorException, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { LoginService } from '../../services/auth/login.service';
 import { RegisterService } from '../../services/auth/register.service';
 import { Response } from 'express';
@@ -18,7 +18,14 @@ export class LoginController {
                 sameSite: 'strict',
                 expires: new Date(Date.now() + 1000 * 60 * 60 * 24) //va a expirar en 1 dia
             })
-            return res.status(HttpStatus.OK).send({ message: 'Usuario logeado correctamente' });
+            return res.status(HttpStatus.OK).send({
+                message: 'Usuario logeado correctamente',
+                user: {
+                    usuario_id: user.usuario_id,
+                    name: user.name,
+                    rolId: user.rolId
+                }
+            });
         } catch (error) {
             console.error("Controllador de login error", error)
             throw new HttpException("Usuario inexisente", HttpStatus.UNAUTHORIZED);
@@ -38,6 +45,17 @@ export class LoginController {
                 'Ocurrio un error al obtener el rol del usuario a travez del token',
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
+        }
+    }
+
+    @Post('/logout')
+    logOut(@Res() res: Response) {
+        try {
+            res.clearCookie('accessToken');
+            return res.status(HttpStatus.OK).send({ message: 'Usuario deslogeado correctamente' });
+        } catch (error) {
+            console.error("Controllador de logout error", error)
+            throw new InternalServerErrorException("Ocurrio un error al deslogear al usuario");
         }
     }
 }
