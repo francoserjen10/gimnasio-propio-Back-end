@@ -1,7 +1,9 @@
 import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorException, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { LoginService } from '../../services/auth/login.service';
 import { RegisterService } from '../../services/auth/register.service';
-import { Response } from 'express';
+import { jwtDecode } from 'jwt-decode';
+import { IUserResponse } from 'src/common/models/interfaces/user.interface';
 
 @Controller('/login')
 export class LoginController {
@@ -23,6 +25,7 @@ export class LoginController {
                 user: {
                     usuario_id: user.usuario_id,
                     name: user.name,
+                    lastName: user.lastName,
                     rolId: user.rolId
                 }
             });
@@ -32,19 +35,25 @@ export class LoginController {
         }
     }
 
-    @Get('/user-role')
-    getUserRole(@Req() req): { rolId: number } | null {
+    @Get('/access/user')
+    async getSessionUser(@Req() req: Request) {
         try {
-            const token: string = req.cookies['accessToken'];
-            return this.loginService.getUserRole(token);
-        } catch (error) {
-            if (error instanceof UnauthorizedException) {
-                throw error;
+            const token = await req.cookies?.accessToken;
+            if (!token) {
+                throw new UnauthorizedException('No existe token');
             }
-            throw new HttpException(
-                'Ocurrio un error al obtener el rol del usuario a travez del token',
-                HttpStatus.INTERNAL_SERVER_ERROR,
-            );
+            const decodedToken: IUserResponse = jwtDecode(token);
+            return {
+                user: {
+                    usuario_id: decodedToken.usuario_id,
+                    name: decodedToken.name,
+                    lastName: decodedToken.lastName,
+                    rolId: decodedToken.rolId
+                }
+            };
+        } catch (error) {
+            console.error("Error obteniendo usuario:", error);
+            throw new HttpException("No autenticado", HttpStatus.UNAUTHORIZED);
         }
     }
 

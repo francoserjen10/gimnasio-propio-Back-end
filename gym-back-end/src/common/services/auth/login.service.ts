@@ -36,18 +36,4 @@ export class LoginService {
             throw new HttpException('Ocurrió un error al intentar acceder sesion', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    getUserRole(token: string): { rolId: number } | null {
-        try {
-            if (!token) {
-                this.logger.warn('Token no encontrado');
-                throw new UnauthorizedException('Token no encontrado');
-            }
-            const decodedToken: IUser = jwtDecode<User>(token);
-            return { rolId: decodedToken.rolId };
-        } catch (error) {
-            this.logger.error(`Error al decodificar el token: ${error.message}`, error.stack);
-            throw new InternalServerErrorException('Error al procesar el token');
-        }
-    }
 }
