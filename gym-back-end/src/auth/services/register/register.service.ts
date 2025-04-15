@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger, NotFoundException } from
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../common/models/entities/user.entity';
+import { User } from '../../../common/models/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
