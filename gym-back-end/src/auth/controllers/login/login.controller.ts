@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorException, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LoginService } from '../../services/auth/login.service';
-import { RegisterService } from '../../services/auth/register.service';
+import { LoginService } from '../../services/login/login.service';
+import { RegisterService } from '../../services/register/register.service';
 import { jwtDecode } from 'jwt-decode';
 import { IUserResponse } from 'src/common/models/interfaces/user.interface';
 
