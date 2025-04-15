@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
-import { RegisterService } from '../../services/auth/register.service';
+import { RegisterService } from '../services/register.service';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 
 @Controller('/register')
