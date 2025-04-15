@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../common/models/entities/user.entity';
+import { User } from '../../../common/models/entities/user.entity';
 import { Repository } from 'typeorm';
 import { IUser, IUserResponse } from 'src/common/models/interfaces/user.interface';
 import { jwtDecode } from 'jwt-decode';
