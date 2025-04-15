@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -16,8 +17,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: false,
       entities: ['dist/**/*.entity.js'],
       // logging: 'all',
-  }),
-    CommonModule, AuthModule], 
+    }),
+    CommonModule, AuthModule, AdminModule],
   controllers: [AppController],
   providers: [AppService],
 })
