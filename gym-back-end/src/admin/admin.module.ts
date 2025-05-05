@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { AdminControllerController } from './controllers/admin-controller.controller';
 import { AdminService } from './services/admin.service';
+import { AdminController } from './controllers/admin.controller';
 
 @Module({
   imports: [],
-  controllers: [AdminControllerController],
+  controllers: [AdminController],
   providers: [JwtAuthGuard, AdminService],
   exports: [],
 })
