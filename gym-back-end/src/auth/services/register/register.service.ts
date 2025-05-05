@@ -116,7 +116,7 @@ export class RegisterService {
                     birthDate: formattedDate,
                     dni: user.dni,
                     email: user.email,
-                    rolId: user.rolId,
+                    rolId: 2,
                     password: hashedPassword,
                     emergencyContact: user.emergencyContact,
                     direction: user.direction,
