@@ -6,7 +6,7 @@ import { RegisterService } from './services/register/register.service';
 import { User } from 'src/common/models/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-
+import { LogoutController } from './controllers/logout/logout.controller';
 @Module({
     imports: [
         TypeOrmModule.forFeature([User]),
@@ -15,7 +15,7 @@ import { JwtModule } from '@nestjs/jwt';
             signOptions: { expiresIn: '60s' },
         })
     ],
-    controllers: [RegisterController, LoginController],
+    controllers: [RegisterController, LoginController, LogoutController],
     providers: [RegisterService, LoginService],
 })
 export class AuthModule { }
