@@ -56,15 +56,4 @@ export class LoginController {
             throw new HttpException("No autenticado", HttpStatus.UNAUTHORIZED);
         }
     }
-
-    @Post('/logout')
-    logOut(@Res() res: Response) {
-        try {
-            res.clearCookie('accessToken');
-            return res.status(HttpStatus.OK).send({ message: 'Usuario deslogeado correctamente' });
-        } catch (error) {
-            console.error("Controllador de logout error", error)
-            throw new InternalServerErrorException("Ocurrio un error al deslogear al usuario");
-        }
-    }
 }
