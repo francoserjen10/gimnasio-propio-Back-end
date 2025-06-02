@@ -2,8 +2,8 @@ import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorEx
 import { Request, Response } from 'express';
 import { LoginService } from '../../services/login/login.service';
 import { RegisterService } from '../../services/register/register.service';
-import { jwtDecode } from 'jwt-decode';
 import { IUserResponse } from 'src/common/models/interfaces/user.interface';
+import { verify } from 'jsonwebtoken';
 
 @Controller('/login')
 export class LoginController {
@@ -42,7 +42,13 @@ export class LoginController {
             if (!token) {
                 throw new UnauthorizedException('No existe token');
             }
-            const decodedToken: IUserResponse = jwtDecode(token);
+            const decodedToken = verify(token, process.env.JWT_SECRET_KEY) as IUserResponse;
+            if (typeof decodedToken !== 'object' ||
+                !('name' in decodedToken) ||
+                !('lastName' in decodedToken) ||
+                !('rolId' in decodedToken)) {
+                throw new InternalServerErrorException('Token no valido');
+            }
             return {
                 user: {
                     usuario_id: decodedToken.usuario_id,
