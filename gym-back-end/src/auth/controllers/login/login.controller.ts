@@ -54,6 +54,7 @@ export class LoginController {
                     usuario_id: decodedToken.usuario_id,
                     name: decodedToken.name,
                     lastName: decodedToken.lastName,
+                    email: decodedToken.email,
                     rolId: decodedToken.rolId
                 }
             };
