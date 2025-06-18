@@ -12,10 +12,11 @@ export class UserService {
     async getAllUsers() {
         try {
             const allUsers: IUserResponse[] = await this.userRepository.find();
+            const onlyClients: IUserResponse[] = allUsers.filter(user => user.rolId !== 1);
             return {
                 status: HttpStatus.OK,
                 message: 'Usuarios encontrados correctamente',
-                data: allUsers,
+                data: onlyClients,
             };
         } catch (error) {
             console.error("Error al traer el listado de usuarios:", error);
