@@ -49,23 +49,6 @@ export class RegisterController {
         }
     }
 
-    // delete user
-    @Delete(':id')
-    async deleteUserById(@Param('id') id: number) {
-        try {
-            const response = await this.registerService.deleteUserById(id);
-            return response;
-        } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new HttpException(
-                `Error inesperado al eliminar el usuario con el ID ${id}`,
-                HttpStatus.INTERNAL_SERVER_ERROR,
-            );
-        }
-    }
-
     @Put(':id')
     async updateUserById(@Param('id') id: number, @Body() user: IUser): Promise<IUser> {
         try {
