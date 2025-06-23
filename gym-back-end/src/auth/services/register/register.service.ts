@@ -39,27 +39,6 @@ export class RegisterService {
         }
     }
 
-    async deleteUserById(id: number): Promise<{ message: string; affected: number }> {
-        try {
-            const userDeleted = await this.userRepository.delete({ usuario_id: id });
-            if (userDeleted.affected === 0) {
-                this.logger.warn(`Usuario con id ${id} no encontrado`);
-                throw new NotFoundException(`Usuario con id ${id} no encontrado`);
-            }
-            this.logger.log(`Usuario con id ${id} eliminado correctamente!`);
-            return { message: `Usuario con id ${id} eliminado correctamente`, affected: userDeleted.affected };
-        } catch (error) {
-            this.logger.error(`Error al eliminar el usuario con id ${id}`, error.stack);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new HttpException(
-                `Error inesperado al eliminar el usuario con el ID ${id}`,
-                HttpStatus.INTERNAL_SERVER_ERROR,
-            );
-        }
-    }
-
     async getUserById(id: number): Promise<IUserResponse | null> {
         try {
             const user: IUserResponse = await this.userRepository.findOneBy({ usuario_id: id });
