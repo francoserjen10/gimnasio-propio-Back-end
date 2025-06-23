@@ -26,6 +26,7 @@ export class LoginController {
                     usuario_id: user.usuario_id,
                     name: user.name,
                     lastName: user.lastName,
+                    email: user.email,
                     rolId: user.rolId
                 }
             });
